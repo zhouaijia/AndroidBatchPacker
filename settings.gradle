@@ -1,0 +1,6 @@
+rootProject.name='AndroidBatchPacker'
+include ':app'
+include ':batchpackerplugin'
+include ':packer_writer'
+include ':packer_reader'
+include ':packer_library'

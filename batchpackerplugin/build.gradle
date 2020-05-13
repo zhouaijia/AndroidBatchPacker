@@ -1,0 +1,26 @@
+apply plugin: 'groovy'
+apply from: rootProject.file("mt_maven.gradle")
+//apply from: rootProject.file('quality.gradle')
+
+jar {
+    manifest {
+        attributes 'PatchPacker-Version': VERSION_NAME
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation fileTree(dir: "./src/main/libs", include: ['*.jar'])
+    implementation 'com.android.tools.build:gradle:3.5.2'
+    implementation 'commons-io:commons-io:2.5'
+    implementation 'commons-codec:commons-codec:1.10'
+    implementation 'org.apache.commons:commons-lang3:3.8.1'
+    implementation 'org.json:json:20080701'// Groovy里有，但是如果这里不依赖报JsonException not found，还是强制依赖下吧。
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation project(':packer_writer')
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}

@@ -1,0 +1,15 @@
+apply plugin: 'maven'
+//apply plugin: 'groovy'//这个插件在com.android.library和com.android.application已经有导入，若此处再次导入会报错
+
+group = GROUP           //当uploadArchives中没有明确指定pom.groupId时，系统就是用此变量值
+version = VERSION_NAME  //当uploadArchives中没有明确指定pom.version时，系统就是用此变量值
+
+uploadArchives {
+    repositories.mavenDeployer {
+        /*pom.groupId = 'com.aijia.batchpacker'
+        pom.artifactId = 'batch-packer'
+        pom.version = '1.0.0'*/
+        //发布到本地仓库
+        repository(url: uri('../repo'))
+    }
+}

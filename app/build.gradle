@@ -1,0 +1,111 @@
+import com.android.build.gradle.api.BaseVariant
+
+apply plugin: 'com.android.application'
+//apply plugin: 'batchPacker'
+//apply from: rootProject.file('quality.gradle')
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        //classpath 'com.android.tools.build:gradle:3.6.3'
+        //classpath "com.aijia.batchpacker:batch-packer:latest.integration"
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.aijia.batchpacker"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 101
+        versionName "1.0.1"
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi', 'x86'
+            universalApk false
+        }
+    }
+
+    signingConfigs {
+        sign {
+            storeFile file("keystore/sign-debug.keystore")
+            storePassword "1234567"
+            keyAlias "debug"
+            keyPassword "12345678"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.sign
+
+            applicationIdSuffix 'debug'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation project(':packer_library')
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+}
+
+/*batchPacker {
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}-${flavorName}.apk'
+    //configFile与channelFile两者必须存在一个，否则无法生成渠道包。两者都存在时优先执行configFile
+    channelFile = new File("${project.getProjectDir()}/channel")
+    //configFile = new File("${project.getProjectDir()}/config.json")
+}*/
+
+// 根据不同的applicationId来配置不同的channelFile／configFile
+/*afterEvaluate {
+    project.android.applicationVariants.all { BaseVariant variant ->
+        if (variant.hasProperty('assembleProvider')) {
+            variant.assembleProvider.doFirst {
+                if (variant.applicationId.endsWith(".debug")) {
+
+                    project.batchPacker.channelFile = new File("${project.getProjectDir()}/channel_debug")
+                }
+            }
+        } else {
+            variant.assemble.doFirst {
+                if (variant.applicationId.endsWith(".debug")) {
+
+                    project.batchPacker.channelFile = new File("${project.getProjectDir()}/channel_debug")
+                }
+            }
+        }
+    }
+}*/
