@@ -1,6 +1,8 @@
 # batch packer
 
-Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器
+参考美团Walle开源库
+
+Batch Packer：Android Signature V2 Scheme签名下的新一代渠道包打包神器
 
 瓦力通过在Apk中的`APK Signature Block`区块添加自定义的渠道信息来生成渠道包，从而提高了渠道包生成效率，可以作为单机工具来使用，也可以部署在HTTP服务器上来实时处理渠道包Apk的升级网络请求。
 
