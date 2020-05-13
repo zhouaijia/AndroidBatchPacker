@@ -1,6 +1,6 @@
 # batch packer
 
-参考美团Walle开源库
+参考美团Walle开源库，仅供自己学习
 
 Batch Packer：Android Signature V2 Scheme签名下的新一代渠道包打包神器
 
